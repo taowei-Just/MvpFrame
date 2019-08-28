@@ -43,7 +43,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public IPresenter getP(IView v) {
+    public P getP(IView v) {
         if (v == null)
             return getP();
         P presenter = getP();
