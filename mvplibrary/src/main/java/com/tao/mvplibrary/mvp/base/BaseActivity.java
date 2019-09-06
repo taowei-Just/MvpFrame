@@ -1,5 +1,6 @@
 package com.tao.mvplibrary.mvp.base;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.tao.mvplibrary.mvp.IPresenter;
+
 import com.tao.mvplibrary.mvp.IView;
 
 import java.lang.reflect.ParameterizedType;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2019-8-7.
@@ -22,6 +26,7 @@ import java.lang.reflect.ParameterizedType;
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseView<P> {
 
     private P mPresenter;
+    private Unbinder bind;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +34,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         beforeSetContentView();
         setContentView(getLayoutId());
+        bind = ButterKnife.bind(this);
         initView();
         initData();
     }
@@ -40,6 +46,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void beforeSetContentView() {
     }
 
+    @Override
+    public void initView() {
+        
+    }
+
     /**
      * 初始化数据
      */
@@ -48,9 +59,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        bind.unbind();
         if (null != mPresenter)
             mPresenter.dettachView();
+        super.onDestroy();
     }
 
     @Override
@@ -143,5 +155,5 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         return false;
     }
-
+ 
 }

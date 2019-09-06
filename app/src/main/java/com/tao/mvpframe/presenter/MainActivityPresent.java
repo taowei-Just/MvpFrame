@@ -19,7 +19,7 @@ public class MainActivityPresent extends BasePresenter<MainActivtyContract.IMain
     }
 
     @Override
-    public MainActivtyContract.IMainactivityModle getM() {
+    protected MainActivtyContract.IMainactivityModle creatM() {
         return new MainActivityModle(this);
     }
 }

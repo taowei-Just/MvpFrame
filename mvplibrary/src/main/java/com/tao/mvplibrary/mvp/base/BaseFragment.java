@@ -1,10 +1,13 @@
 package com.tao.mvplibrary.mvp.base;
 
 
+import android.app.Fragment;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +18,17 @@ import com.tao.mvplibrary.mvp.IView;
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2019-8-7.
  */
 
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseView {
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseView<P> {
     P mPresenter;
     public View mView;
     public Context mcContext;
+    private Unbinder bind;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,16 +44,26 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        bind = ButterKnife.bind(this, view);
         mView = view;
         mcContext = view.getContext();
         initView();
     }
 
     @Override
+    public void initView() {
+
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
+    }
+
+    @Override
+    public void initData() {
+        
     }
 
     public IView getAttachView() {
@@ -94,5 +109,11 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         super.onDestroy();
         if (null != mPresenter)
             mPresenter.dettachView();
+        bind.unbind();
+    }
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return new LifecycleRegistry(this);
     }
 }

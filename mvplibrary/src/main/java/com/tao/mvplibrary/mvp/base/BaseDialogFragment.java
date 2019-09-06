@@ -2,12 +2,16 @@ package com.tao.mvplibrary.mvp.base;
 
 
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +25,7 @@ import com.tao.mvplibrary.mvp.IView;
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2019-8-7.
@@ -32,6 +37,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     public Context mContext;
     private OnDimssListener onDimssListener;
     private Dialog mDialog;
+    private Unbinder bind;
 
     public void setOnDimssListener(OnDimssListener onDimssListener) {
         this.onDimssListener = onDimssListener;
@@ -72,7 +78,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        bind = ButterKnife.bind(this, view);
         mView = view;
         mContext = view.getContext();
 //        view.setOnTouchListener(this);
@@ -87,6 +93,15 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         getDialog().getWindow().getDecorView().setOnTouchListener(this);
         getP();
         initData();
+    }
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+        
     }
 
     @Override
@@ -122,6 +137,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
     @Override
     public void onDestroy() {
+        bind.unbind();
         super.onDestroy();
     }
 
@@ -194,4 +210,9 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         }
     }
 
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return new LifecycleRegistry(this);
+    }
 }

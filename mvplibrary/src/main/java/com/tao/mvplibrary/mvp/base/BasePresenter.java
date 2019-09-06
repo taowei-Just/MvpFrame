@@ -33,7 +33,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     public String tag = getClass().getSimpleName();
     private boolean deattachV = false;
     private WeakReference<V> v;
-    M mModle;
+    public M mModle;
 
 
     public boolean isDeattachV() {
@@ -42,13 +42,16 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
 
     public BasePresenter() {
         EventBus.getDefault().register(this);
-        setM(getM());
+        setM(creatM());
     }
+
+    protected abstract M creatM();
 
     @Override
     public V getV() throws Exception {
         if (!isAttachedV())
             return null;
+        
         return v.get();
     }
 
@@ -60,7 +63,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
         mModle = modle;
     }
 
-    public M getM() {
+   final   public M getM() {
         return mModle;
     }
 
@@ -74,11 +77,13 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     public void dettachView() {
         deattachV = true;
         EventBus.getDefault().unregister(this);
+        if (null != mModle)
+            mModle.deattach();
+        mModle=null;
         if (null != v && null != v.get())
             v.clear();
         v = null;
     }
-
 
     @Subscribe
     public void sub(String str) {
