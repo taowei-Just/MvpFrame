@@ -1,6 +1,6 @@
 # MvpFrame
-## Retrofit2+Rxjava+Okhttp+Butterknife+EventBus+Mvp
-###不说话快导包
+## Retrofit2+Rxjava+Okhttp+Butterknife+EventBus+Mvp  来不及了快导包
+
 // Retrofit库
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'</bar>
     // gson库</bar>
