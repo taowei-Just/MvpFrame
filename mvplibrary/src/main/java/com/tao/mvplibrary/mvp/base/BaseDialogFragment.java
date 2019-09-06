@@ -2,13 +2,12 @@ package com.tao.mvplibrary.mvp.base;
 
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.IBinder;
-
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.tao.mvplibrary.mvp.IView;
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
-
 
 /**
  * Created by Administrator on 2019-8-7.
@@ -41,16 +39,13 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        try {
-            hideKeyboard(mContext, mDialog.getCurrentFocus());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        super.onDismiss(dialog);
+   
         if (null != mPresenter)
             mPresenter.dettachView();
         if (null != onDimssListener)
             onDimssListener.onDismiss();
+        super.onDismiss(dialog);
+
     }
 
     @Override
@@ -83,6 +78,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 //        view.setOnTouchListener(this);
         initView();
         mDialog = getDialog();
+        
     }
 
     @Override
@@ -181,12 +177,12 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     /**
      * 获取InputMethodManager，隐藏软键盘
      *
-     * @param 
+     * @param
      */
-    public static void hideKeyboard(Context context, View view) throws Exception{
+    public static void hideKeyboard(Context context, View view) throws Exception {
         if (view != null) {
             InputMethodManager im = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-             im.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            im.hideSoftInputFromWindow(view.getWindowToken(), 0);
 //             im.showSoftInput(view,InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }

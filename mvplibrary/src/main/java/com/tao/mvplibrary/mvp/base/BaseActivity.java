@@ -3,16 +3,12 @@ package com.tao.mvplibrary.mvp.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.IBinder;
-
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
-
- 
 
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
@@ -24,15 +20,30 @@ import java.lang.reflect.ParameterizedType;
  */
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseView<P> {
+
     private P mPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getP().attachView(getAttachView());
         super.onCreate(savedInstanceState);
+        beforeSetContentView();
         setContentView(getLayoutId());
         initView();
         initData();
+    }
+
+    /**
+     * 在用于设的contentview之前
+     * 多用于的控制
+     */
+    public void beforeSetContentView() {
+    }
+
+    /**
+     * 初始化数据
+     */
+    public void initData() {
     }
 
     @Override
@@ -67,14 +78,15 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             }
         }
         if (mPresenter != null) {
-            if (!mPresenter.isAttachedV()&&!mPresenter.isDeattachV()) {
+            if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
                 mPresenter.attachView(this);
             }
         }
         return mPresenter;
     }
-    protected   IView getAttachView(){
-        return this ;
+
+    protected IView getAttachView() {
+        return this;
     }
 
     @Override
@@ -120,8 +132,9 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     /**
      * 获取InputMethodManager，隐藏软键盘
+     * 最好使用post隐藏
      *
-     * @param token
+     * @param token 焦点view的token
      */
     private static boolean hideKeyboard(Context context, IBinder token) {
         if (token != null) {

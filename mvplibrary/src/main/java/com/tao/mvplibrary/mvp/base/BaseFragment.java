@@ -1,11 +1,10 @@
 package com.tao.mvplibrary.mvp.base;
 
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.tao.mvplibrary.mvp.IView;
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
-
 
 /**
  * Created by Administrator on 2019-8-7.
