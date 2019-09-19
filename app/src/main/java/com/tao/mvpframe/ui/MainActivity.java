@@ -17,12 +17,18 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends BaseActivity<MainActivityPresent> implements MainActivtyContract.IMainActivtyView<MainActivityPresent> {
     @Override
+    public void beforeSetContentView() {
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_main;
     }
+
     @Override
     public void initView() {
     }
+
     @Override
     public void initData() {
 
@@ -56,9 +62,11 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
     public void test(View view) {
         getP().test();
     }
+
     public void post(View view) {
         getP().testPost();
     }
+
     public void pushFiles(View view) {
         getP().testPostFile();
     }

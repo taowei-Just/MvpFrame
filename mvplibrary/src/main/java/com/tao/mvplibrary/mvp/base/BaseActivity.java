@@ -41,7 +41,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     /**
      * 在用于设的contentview之前
-     * 多用于的控制
+     * 多用于窗口的设置
      */
     public void beforeSetContentView() {
     }

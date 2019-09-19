@@ -34,7 +34,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(path: ':mvplibrary')
 
-
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    
     // Retrofit库
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     // gson库
