@@ -50,8 +50,8 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     @Override
     public V getV() throws Exception {
         if (!isAttachedV())
-            return null;
-        
+             throw  new Exception("v is null or v un attached");
+
         return v.get();
     }
 
@@ -63,7 +63,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
         mModle = modle;
     }
 
-   final   public M getM() {
+    final public M getM() {
         return mModle;
     }
 
@@ -79,7 +79,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
         EventBus.getDefault().unregister(this);
         if (null != mModle)
             mModle.deattach();
-        mModle=null;
+        mModle = null;
         if (null != v && null != v.get())
             v.clear();
         v = null;

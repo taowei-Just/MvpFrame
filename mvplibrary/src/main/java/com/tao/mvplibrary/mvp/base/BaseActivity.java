@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -30,7 +32,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        getP().attachView(getAttachView());
+        try {
+            getP().attachView(getAttachView());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         beforeSetContentView();
         setContentView(getLayoutId());
@@ -66,7 +72,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    public P getP(IView v) {
+    public P getP(IView v) throws Exception {
         if (v == null)
             return getP();
         P presenter = getP();
@@ -77,17 +83,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
 
     @Override
-    public P getP() {
+    public P getP() throws Exception {
         if (mPresenter == null) {
             //实例化P层，类似于p = new P();
             ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
-            try {
                 mPresenter = clazz.newInstance();
-            } catch (Exception e) {
-//                StaticUtils.loge(e.getMessage());
-                e.printStackTrace();
-            }
         }
         if (mPresenter != null) {
             if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
@@ -155,5 +156,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         return false;
     }
- 
+    
+    public void noTitel(){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+    }
+    public void fullScreen() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 }

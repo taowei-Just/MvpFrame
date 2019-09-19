@@ -8,7 +8,7 @@ import android.arch.lifecycle.LifecycleOwner;
  */
 
 public interface IView <P extends IPresenter> extends LifecycleOwner {
-    P getP();
-    P getP(IView view);
+    P getP() throws Exception;
+    P getP(IView view) throws Exception;
 
 }

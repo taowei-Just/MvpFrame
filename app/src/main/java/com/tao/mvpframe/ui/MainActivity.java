@@ -18,7 +18,11 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity<MainActivityPresent> implements MainActivtyContract.IMainActivtyView<MainActivityPresent> {
     @Override
     public void beforeSetContentView() {
+        fullScreen();
     }
+
+   
+
 
     @Override
     public int getLayoutId() {
@@ -60,15 +64,27 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
     }
 
     public void test(View view) {
-        getP().test();
+        try {
+            getP().test();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void post(View view) {
-        getP().testPost();
+        try {
+            getP().testPost();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void pushFiles(View view) {
-        getP().testPostFile();
+        try {
+            getP().testPostFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

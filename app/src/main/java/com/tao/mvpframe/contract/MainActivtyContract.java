@@ -16,14 +16,13 @@ public interface MainActivtyContract {
 
     }
 
-    interface IMainActivtyView<P extends IPresenter> extends IBaseView<P> {
+    interface IMainActivtyView<P extends IPresenter> extends IView<P> {
     }
 
 
     interface IMainactivityModle extends IModle {
 
         void testPost();
-
         void test();
         void testPostFile();
     }
