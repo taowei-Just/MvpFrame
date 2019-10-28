@@ -35,29 +35,36 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     P mPresenter;
     public View mView;
     public Context mContext;
-    private OnDimssListener onDimssListener;
+    public OnDimssListener onDimssListener;
     private Dialog mDialog;
     private Unbinder bind;
+    private IView attachView;
 
+    public  static  <T extends BaseDialogFragment> T getInstance(Class<T> tClass) throws Exception {
+        return tClass.newInstance();
+    }
     public void setOnDimssListener(OnDimssListener onDimssListener) {
         this.onDimssListener = onDimssListener;
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-   
         if (null != mPresenter)
             mPresenter.dettachView();
         if (null != onDimssListener)
-            onDimssListener.onDismiss();
+            onDimssListener.onDismiss(getClass().getSimpleName());
         super.onDismiss(dialog);
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getP().attachView(getAttachView());
+        try {
+            attachView = getAttachView();
+            getP().attachView(attachView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -91,7 +98,11 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getDialog().getWindow().getDecorView().setOnTouchListener(this);
-        getP();
+        try {
+            getP();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initData();
     }
     @Override
@@ -105,7 +116,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     }
 
     @Override
-    public P getP(IView v) {
+    public P getP(IView v) throws Exception{
         if (v == null)
             return getP();
         P presenter = getP();
@@ -116,16 +127,14 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
 
     @Override
-    public P getP() {
+    public P getP() throws  Exception {
         if (mPresenter == null) {
             //实例化P层，类似于p = new P();
             ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
-            try {
+            
                 mPresenter = clazz.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+           
         }
         if (mPresenter != null) {
             if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
@@ -137,7 +146,8 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
     @Override
     public void onDestroy() {
-        bind.unbind();
+        if (null != mPresenter)
+            mPresenter.dettachView();
         super.onDestroy();
     }
 
@@ -159,7 +169,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
 
     public interface OnDimssListener {
-        void onDismiss();
+        void onDismiss(String tag);
     }
 
 

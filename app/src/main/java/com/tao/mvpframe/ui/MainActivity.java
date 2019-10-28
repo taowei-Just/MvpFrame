@@ -18,10 +18,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity<MainActivityPresent> implements MainActivtyContract.IMainActivtyView<MainActivityPresent> {
     @Override
     public void beforeSetContentView() {
+        noTitel();
         fullScreen();
     }
-
-   
 
 
     @Override

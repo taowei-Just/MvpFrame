@@ -1,12 +1,13 @@
 package com.tao.mvplibrary.mvp.base;
 
 
-import android.app.Fragment;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +23,20 @@ import butterknife.Unbinder;
  * Created by Administrator on 2019-8-7.
  */
 
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IBaseView<P> {
+public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends DialogFragment implements IBaseView<P> {
     P mPresenter;
     public View mView;
     public Context mcContext;
     private Unbinder bind;
+    public BaseDialogFragment.OnDimssListener onDimssListener;
     private IView attachView;
 
-    public static <T extends BaseFragment> T getInstance(Class<T> tClass) throws Exception {
+    public  static  <T extends BaseSupportDialogFragment> T getInstance(Class<T> tClass) throws Exception {
         return tClass.newInstance();
+    }
+
+    public void setOnDimssListener(BaseDialogFragment.OnDimssListener onDimssListener) {
+        this.onDimssListener = onDimssListener;
     }
 
     @Override
@@ -79,7 +85,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public P getP(IView v)throws  Exception  {
+    public P getP(IView v)  throws Exception{
         if (v == null)
             return getP();
 
@@ -91,12 +97,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
 
     @Override
-    public P getP()throws  Exception  {
+    public P getP() throws Exception{
         if (mPresenter == null) {
             //实例化P层，类似于p = new P();
             ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
                 mPresenter = clazz.newInstance();
+             
         }
         if (mPresenter != null) {
             if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
@@ -111,6 +118,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         super.onDestroy();
         if (null != mPresenter)
             mPresenter.dettachView();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (null!=onDimssListener)
+        onDimssListener.onDismiss(getClass().getSimpleName());
     }
 
     @Override

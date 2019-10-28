@@ -1,5 +1,6 @@
 package com.tao.mvplibrary.mvp.base;
 
+import android.app.ActionBar;
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,11 +30,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     private P mPresenter;
     private Unbinder bind;
+    private IView attachView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         try {
-            getP().attachView(getAttachView());
+            attachView = getAttachView();
+            getP().attachView(attachView);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +57,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     public void initView() {
-        
+
     }
 
     /**
@@ -65,7 +68,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onDestroy() {
-        bind.unbind();
         if (null != mPresenter)
             mPresenter.dettachView();
         super.onDestroy();
@@ -88,7 +90,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             //实例化P层，类似于p = new P();
             ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
-                mPresenter = clazz.newInstance();
+            mPresenter = clazz.newInstance();
         }
         if (mPresenter != null) {
             if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
@@ -156,12 +158,41 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         return false;
     }
-    
-    public void noTitel(){
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+    // 去掉默认的actionbar
+    public void noTitel() {
+
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null)
+            actionBar.hide();
+        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null)
+            supportActionBar.hide();
     }
+
+    // 全屏
     public void fullScreen() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+ 
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        setSystemUiVisibility();
+    }
+
+    /**
+     * 
+     * 
+     * 操作系统状态栏
+     */
+    
+    public void setSystemUiVisibility() {
+        
+       
+    }
+ 
 }

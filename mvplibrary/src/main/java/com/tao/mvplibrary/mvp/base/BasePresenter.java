@@ -35,7 +35,6 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     private WeakReference<V> v;
     public M mModle;
 
-
     public boolean isDeattachV() {
         return deattachV;
     }
@@ -45,12 +44,14 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
         setM(creatM());
     }
 
-    protected abstract M creatM();
+    public M creatM() {
+        return null ;
+    }
 
     @Override
     public V getV() throws Exception {
         if (!isAttachedV())
-             throw  new Exception("v is null or v un attached");
+            throw new Exception("v is null or v un attached");
 
         return v.get();
     }
