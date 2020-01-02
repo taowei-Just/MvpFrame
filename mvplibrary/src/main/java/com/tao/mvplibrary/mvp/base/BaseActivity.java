@@ -40,12 +40,17 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         } catch (Exception e) {
             e.printStackTrace();
         }
+        beforeCreate();
         super.onCreate(savedInstanceState);
         beforeSetContentView();
         setContentView(getLayoutId());
         bind = ButterKnife.bind(this);
         initView();
         initData();
+    }
+
+    public void beforeCreate() {
+        
     }
 
     /**
@@ -159,8 +164,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         return false;
     }
 
+    public void noTitle(){
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+    }
+    
     // 去掉默认的actionbar
-    public void noTitel() {
+    public void noActionBar() {
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null)
@@ -172,7 +181,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     // 全屏
     public void fullScreen() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
@@ -191,7 +199,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     
     public void setSystemUiVisibility() {
-        
+      
        
     }
  

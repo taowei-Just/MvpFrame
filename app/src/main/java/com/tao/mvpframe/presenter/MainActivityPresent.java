@@ -1,5 +1,7 @@
 package com.tao.mvpframe.presenter;
 
+import android.util.Log;
+
 import com.tao.mvpframe.contract.MainActivtyContract;
 import com.tao.mvpframe.modle.MainActivityModle;
 import com.tao.mvplibrary.mvp.base.BasePresenter;
@@ -21,5 +23,23 @@ public class MainActivityPresent extends BasePresenter<MainActivtyContract.IMain
     @Override
     public MainActivtyContract.IMainactivityModle creatM() {
         return new MainActivityModle(this);
+    }
+
+    public void switchUi() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(tag, " back thread " + Thread.currentThread());
+                runOnUI(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e(tag, "ui thread" + Thread.currentThread());
+
+                    }
+                });
+            }
+        }).start();
+
     }
 }

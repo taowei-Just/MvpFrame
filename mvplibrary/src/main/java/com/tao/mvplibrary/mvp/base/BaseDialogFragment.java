@@ -97,7 +97,11 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getDialog().getWindow().getDecorView().setOnTouchListener(this);
+        try {
+            getDialog().getWindow().getDecorView().setOnTouchListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             getP();
         } catch (Exception e) {

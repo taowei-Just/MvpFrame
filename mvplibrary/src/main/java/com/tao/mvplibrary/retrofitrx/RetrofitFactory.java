@@ -20,8 +20,6 @@ public class RetrofitFactory {
     private Retrofit mRxRetrofit;
     private Retrofit mRxGsonRetrofit;
     private static Map<String, RetrofitFactory> factoryMap = new HashMap<>();
-
-
     private final OkHttpClient mOkHttpClient;
 
     private RetrofitFactory(String baseUrl) {

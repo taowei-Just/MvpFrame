@@ -23,6 +23,7 @@ import io.reactivex.ObservableTransformer;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -45,7 +46,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     }
 
     public M creatM() {
-        return null ;
+        return null;
     }
 
     @Override
@@ -93,29 +94,39 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     // 抛到ui执行
     public void runOnUI(final Runnable runnable) {
         try {
-            toSubscribe(Observable.create(new ObservableOnSubscribe<Object>() {
+            Observable.create(new ObservableOnSubscribe<String>() {
                 @Override
-                public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                public void subscribe(ObservableEmitter<String> e) throws Exception {
                     e.onNext("");
                 }
-            }), new Observer<Object>() {
-                @Override
-                public void onSubscribe(Disposable d) {
-                }
+            }).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String s) throws Exception {
+                            runnable.run();
+                        }
+                    });
+//                            
+//                            subscribe(
+//                            new Observer<String>() {
+//                                @Override
+//                                public void onSubscribe(Disposable d) {
+//                                }
+//
+//                                @Override
+//                                public void onNext(String o) {
+//                                   
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable e) {
+//                                }
+//
+//                                @Override
+//                                public void onComplete() {
+//                                }
+//                            });
 
-                @Override
-                public void onNext(Object o) {
-                    runnable.run();
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                }
-
-                @Override
-                public void onComplete() {
-                }
-            });
 
         } catch (Exception e) {
             e.printStackTrace();

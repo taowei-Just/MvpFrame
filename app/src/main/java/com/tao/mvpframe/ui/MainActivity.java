@@ -18,7 +18,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class MainActivity extends BaseActivity<MainActivityPresent> implements MainActivtyContract.IMainActivtyView<MainActivityPresent> {
     @Override
     public void beforeSetContentView() {
-        noTitel();
+        noActionBar();
         fullScreen();
     }
 
@@ -87,4 +87,11 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
     }
 
 
+    public void switchui(View view) {
+        try {
+            getP().switchUi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
