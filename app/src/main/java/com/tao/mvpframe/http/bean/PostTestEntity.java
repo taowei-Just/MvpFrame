@@ -2,7 +2,7 @@ package com.tao.mvpframe.http.bean;
 
 import com.tao.mvpframe.http.api.MyApi;
 import com.tao.mvpframe.http.base.BaseObserver;
-import com.tao.mvplibrary.retrofitrx.RetrofitFactory;
+import com.tao.xmvplibrary.retrofitrx.RetrofitFactory;
 
 import java.io.File;
 import java.io.IOException;

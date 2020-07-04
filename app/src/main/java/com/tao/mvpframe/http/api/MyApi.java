@@ -22,14 +22,11 @@ import retrofit2.http.PartMap;
 public interface MyApi {
     @GET("mock")
     Observable<MyBaseEntity<MockEntity>> getMock();
-
     @FormUrlEncoded
     @POST("post/test")
     Observable<MyBaseEntity<PostTestEntity>> postTest(@Field("test") String  test);
-    
     @POST("")
     Observable  post(@Body RequestBody requestBody );
-
     @Multipart
     @POST("log")
     Observable <ResponseBody>pushFiles(@PartMap Map<String , RequestBody>partMap);

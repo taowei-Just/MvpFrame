@@ -8,7 +8,7 @@ import android.view.View;
 import com.tao.mvpframe.R;
 import com.tao.mvpframe.contract.MainActivtyContract;
 import com.tao.mvpframe.presenter.MainActivityPresent;
-import com.tao.mvplibrary.mvp.base.BaseActivity;
+import com.tao.xmvplibrary.mvp.base.BaseActivity;
 
 import java.util.List;
 
@@ -90,6 +90,14 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
     public void switchui(View view) {
         try {
             getP().switchUi();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void test001(View view) {
+        try {
+            getP().test001();
         } catch (Exception e) {
             e.printStackTrace();
         }
