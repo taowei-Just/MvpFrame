@@ -1,9 +1,9 @@
 package com.tao.mvpframe.contract;
 
 
-import com.tao.xmvplibrary.mvp.IModle;
-import com.tao.xmvplibrary.mvp.IPresenter;
-import com.tao.xmvplibrary.mvp.IView;
+import com.tao.mvplibrary.mvp.IModle;
+import com.tao.mvplibrary.mvp.IPresenter;
+import com.tao.mvplibrary.mvp.IView;
 
 /**
  * Created by Administrator on 2019-8-7.

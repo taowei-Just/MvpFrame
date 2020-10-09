@@ -10,10 +10,9 @@ import com.tao.mvpframe.contract.MainActivtyContract;
 import com.tao.mvpframe.http.bean.MockEntity;
 import com.tao.mvpframe.http.bean.PostFileTestEntity;
 import com.tao.mvpframe.http.bean.PostTestEntity;
-import com.tao.mvpframe.utils.RxUtils;
-import com.tao.xmvplibrary.mvp.base.BaseModle;
-import com.tao.xmvplibrary.mvp.base.BasePresenter;
-import com.tao.xmvplibrary.retrofitrx.RetrofitFactory;
+import com.tao.mvplibrary.mvp.base.BaseModle;
+import com.tao.mvplibrary.mvp.base.BasePresenter;
+import com.tao.mvplibrary.retrofitrx.RetrofitFactory;
 
 import java.io.File;
 import java.util.HashMap;
