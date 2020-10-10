@@ -1,9 +1,7 @@
 package com.tao.mvplibrary.mvp;
 
-import com.tao.mvplibrary.mvp.base.BasePresenter;
 
-public interface IModle<P extends BasePresenter> {
-
+public interface IModle<P extends IPresenter> {
     P getP();
     void deattach();
 }

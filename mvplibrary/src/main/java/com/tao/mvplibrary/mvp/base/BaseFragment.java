@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
 
 import java.lang.reflect.ParameterizedType;

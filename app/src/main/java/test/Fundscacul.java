@@ -1,7 +1,7 @@
 package test;
 
 import com.tao.mvpframe.http.api.FundsApi;
-import com.tao.mvplibrary.retrofitrx.RetrofitFactory;
+import com.tao.mvpbaselibrary.retrofitrx.RetrofitFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,0 +1,59 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    testImplementation 'junit:junit:4.12'
+    api project(path: ':lib_http')
+
+
+
+    // butterknife
+    implementation "com.jakewharton:butterknife:$deps.butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$deps.butterknife_compiler"
+    // eventBus
+    implementation "org.greenrobot:eventbus:$deps.eventbus"
+
+    // Retrofit库
+    implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
+    // gson库
+    implementation "com.squareup.retrofit2:converter-gson:$deps.converter_gson"
+    // Retrofit中的rxjava adapter
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$deps.adapter_rxjava2"
+    //rxjava and rxandroid
+    implementation "io.reactivex.rxjava2:rxjava:$deps.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$deps.rxandroid"
+    // okhttp
+    implementation "com.squareup.okhttp3:okhttp:$deps.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$deps.okhttp3_logging_interceptor"
+    implementation "com.google.code.gson:gson:$deps.gson"
+
+
+    // 自动解绑
+    implementation "com.uber.autodispose:autodispose:$deps.autodispose"
+    implementation "com.uber.autodispose:autodispose-android-archcomponents:$deps.autodispose_android_archcomponents"
+
+   
+
+}

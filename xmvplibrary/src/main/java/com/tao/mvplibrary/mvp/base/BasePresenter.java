@@ -1,9 +1,9 @@
 package com.tao.mvplibrary.mvp.base;
 
-import android.arch.lifecycle.Lifecycle;
 
 
-import com.tao.mvplibrary.mvp.IModle;
+import androidx.lifecycle.Lifecycle;
+
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
 import com.uber.autodispose.AutoDispose;

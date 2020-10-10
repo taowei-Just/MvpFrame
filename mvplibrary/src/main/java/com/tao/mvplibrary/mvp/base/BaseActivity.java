@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
 
 import java.lang.reflect.ParameterizedType;

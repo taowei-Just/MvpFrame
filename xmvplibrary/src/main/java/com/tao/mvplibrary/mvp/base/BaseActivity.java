@@ -15,6 +15,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
 
 import java.lang.reflect.ParameterizedType;
@@ -26,7 +27,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2019-8-7.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements LifecycleOwner,IBaseView<P> {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements LifecycleOwner, IBaseView<P> {
 
     private P mPresenter;
     private Unbinder bind;

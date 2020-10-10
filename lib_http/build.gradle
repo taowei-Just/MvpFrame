@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //这里以后放到一个远程库依赖
+    implementation "com.google.code.gson:gson:$deps.gson"
+    implementation "com.squareup.okhttp3:logging-interceptor:$deps.okhttp3_logging_interceptor"
+    implementation "com.squareup.retrofit2:converter-gson:$deps.converter_gson"
+    implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$deps.okhttp"
+
+    // Retrofit中的rxjava adapter
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$deps.adapter_rxjava2"
+    
+    //rxjava and rxandroid
+    implementation "io.reactivex.rxjava2:rxjava:$deps.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$deps.rxandroid"
+
+}

@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import androidx.lifecycle.LifecycleOwner;
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
 
 import java.lang.reflect.ParameterizedType;

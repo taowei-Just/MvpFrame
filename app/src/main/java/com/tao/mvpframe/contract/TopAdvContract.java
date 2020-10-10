@@ -1,9 +1,9 @@
 package com.tao.mvpframe.contract;
 
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
-import com.tao.mvplibrary.mvp.base.IBaseView;
 
 import java.util.HashMap;
 

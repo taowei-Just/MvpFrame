@@ -1,6 +1,7 @@
 package com.tao.mvpframe.contract;
 
 import android.content.Context;
+
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
 import com.tao.mvplibrary.mvp.base.BasePresenter;

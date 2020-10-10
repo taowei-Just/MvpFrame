@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.tao.mvplibrary.mvp.IView;
-
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;

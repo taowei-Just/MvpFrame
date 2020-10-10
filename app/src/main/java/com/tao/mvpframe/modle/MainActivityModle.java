@@ -12,7 +12,7 @@ import com.tao.mvpframe.http.bean.PostFileTestEntity;
 import com.tao.mvpframe.http.bean.PostTestEntity;
 import com.tao.mvplibrary.mvp.base.BaseModle;
 import com.tao.mvplibrary.mvp.base.BasePresenter;
-import com.tao.mvplibrary.retrofitrx.RetrofitFactory;
+import com.tao.mvpbaselibrary.retrofitrx.RetrofitFactory;
 
 import java.io.File;
 import java.util.HashMap;

@@ -16,7 +16,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
+
 import java.lang.reflect.ParameterizedType;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
