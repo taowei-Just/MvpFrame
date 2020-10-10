@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 
+
+ 
+
 import com.tao.mvpframe.R;
 import com.tao.mvpframe.contract.MainActivtyContract;
 import com.tao.mvpframe.presenter.MainActivityPresent;
-import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
 import com.tao.mvplibrary.mvp.base.BaseActivity;
 import java.util.List;

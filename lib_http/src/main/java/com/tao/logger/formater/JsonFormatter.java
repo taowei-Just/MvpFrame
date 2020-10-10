@@ -48,9 +48,6 @@ public class JsonFormatter implements IFormatter<String> {
         while (json.startsWith(lineSeparator, lineSize * lineSeparator.length())) {
             lineSize++;
         }
-        if (json.startsWith(s, lineSize * lineSeparator.length())) {
-            return true;
-        }
-        return false;
+        return json.startsWith(s, lineSize * lineSeparator.length());
     }
 }

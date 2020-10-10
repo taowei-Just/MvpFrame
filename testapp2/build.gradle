@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.tao.testapp2"
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+
+    // butterknife
+    implementation "com.jakewharton:butterknife:$deps.butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$deps.butterknife_compiler"
+    // eventBus
+    implementation "org.greenrobot:eventbus:$deps.eventbus"
+    // Retrofit库
+    implementation "com.squareup.retrofit2:retrofit:$deps.retrofit"
+    // gson库
+    implementation "com.squareup.retrofit2:converter-gson:$deps.converter_gson"
+    // Retrofit中的rxjava adapter
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$deps.adapter_rxjava2"
+    //rxjava and rxandroid
+    implementation "io.reactivex.rxjava2:rxjava:$deps.rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$deps.rxandroid"
+    // okhttp
+    implementation "com.squareup.okhttp3:okhttp:$deps.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$deps.okhttp3_logging_interceptor"
+    implementation "com.google.code.gson:gson:$deps.gson"
+
+
+
+    // 自动解绑
+//    implementation 'com.uber.autodispose:autodispose:0.8.0'
+//    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.8.0'
+//    implementation 'com.google.android.material:material:1.0.0'
+
+
+    // androidx 自动解绑
+    implementation "com.uber.autodispose:autodispose:$androidx.autodispose"
+    implementation "com.uber.autodispose:autodispose-android:$androidx.autodispose_android"
+    implementation "com.uber.autodispose:autodispose-android-archcomponents:$androidx.autodispose_android"
+    implementation "com.uber.autodispose:autodispose-android-archcomponents-test:$androidx.autodispose_android_archcomponents_test"
+
+}

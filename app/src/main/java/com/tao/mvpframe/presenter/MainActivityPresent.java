@@ -1,10 +1,16 @@
 package com.tao.mvpframe.presenter;
 
-import android.util.Log;
+ 
 
+import com.tao.mvpbaselibrary.mvp.base.BaseObserver;
 import com.tao.mvpframe.contract.MainActivtyContract;
 import com.tao.mvpframe.modle.MainActivityModle;
 import com.tao.mvplibrary.mvp.base.BasePresenter;
+import com.tao.mvplibrary.utils.RxUtils;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 
 public class MainActivityPresent extends BasePresenter<MainActivtyContract.IMainActivtyView, MainActivtyContract.IMainactivityModle>
         implements MainActivtyContract.IMainActivtyPresenter<MainActivtyContract.IMainActivtyView> {
@@ -27,20 +33,23 @@ public class MainActivityPresent extends BasePresenter<MainActivtyContract.IMain
     }
 
     public void switchUi() {
-
-        new Thread(new Runnable() {
+        runOnUI(new Runnable() {
             @Override
             public void run() {
-                Log.e(tag, " back thread " + Thread.currentThread());
-                runOnUI(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(tag, "ui thread" + Thread.currentThread());
-
-                    }
-                });
+                
             }
-        }).start();
+        });
+        RxUtils.toSubscribe(Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+
+            }
+        }), new BaseObserver() {
+            @Override
+            public void onNext(Object o) {
+            
+            }
+        }, getLifecycle());
 
     }
 

@@ -156,9 +156,6 @@ public class Fundscacul {
 
         } else {
             Fundsinfo fundsinfo1 = getHundred(getzerro, fundsData);
-            if (fundsinfo1 == null) {
-                return null;
-            }
             return fundsinfo1;
         }
     }

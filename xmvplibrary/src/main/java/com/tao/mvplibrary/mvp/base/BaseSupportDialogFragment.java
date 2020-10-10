@@ -15,6 +15,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.tao.mvplibrary.mvp.IBaseView;
+import com.tao.mvplibrary.mvp.IView;
+
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
@@ -24,7 +27,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2019-8-7.
  */
 
-public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends DialogFragment implements LifecycleOwner,IBaseView<P> {
+public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends DialogFragment implements LifecycleOwner, IBaseView<P> {
     P mPresenter;
     public View mView;
     public Context mcContext;

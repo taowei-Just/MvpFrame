@@ -10,6 +10,7 @@ import com.tao.logger.printer.IPrinter;
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Connection;
@@ -36,7 +37,7 @@ import okio.GzipSource;
  * @describe
  */
 public class OkHttpLogInterceptor implements Interceptor {
-    private static final Charset UTF8 = Charset.forName("UTF-8");
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
      * Drawing toolbox

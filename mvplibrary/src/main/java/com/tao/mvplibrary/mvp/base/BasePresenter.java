@@ -34,6 +34,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     private boolean deattachV = false;
     private WeakReference<V> v;
     public M mModle;
+    WeakReference<Lifecycle> lifecycle;
 
     public boolean isDeattachV() {
         return deattachV;
@@ -42,6 +43,18 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     public BasePresenter() {
         EventBus.getDefault().register(this);
         setM(creatM());
+    }
+
+    public Lifecycle getLifecycle() {
+        Lifecycle lifecycle = this.lifecycle.get();
+        if (null == lifecycle && v != null && v.get() != null && (v.get() instanceof Lifecycle)) {
+            lifecycle = (Lifecycle) v.get();
+        }
+        return lifecycle;
+    }
+
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = new WeakReference<Lifecycle>(lifecycle);
     }
 
     public M creatM() {

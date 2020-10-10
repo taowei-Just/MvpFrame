@@ -1,9 +1,9 @@
 package com.tao.mvplibrary.mvp.base;
 
 
-
 import androidx.lifecycle.Lifecycle;
 
+import com.tao.mvplibrary.mvp.IModle;
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
 import com.uber.autodispose.AutoDispose;
@@ -84,6 +84,23 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
         if (null != v && null != v.get())
             v.clear();
         v = null;
+    }
+
+    /**
+     * 增加lifecycle 参数传入
+     */
+    WeakReference<Lifecycle> lifecycle;
+
+    public Lifecycle getLifecycle() {
+        Lifecycle lf = null;
+        if (null != lifecycle && null == lifecycle.get() && v != null && v.get() != null && (v.get() instanceof Lifecycle)) {
+            lf = (Lifecycle) v.get();
+        }
+        return lf;
+    }
+
+    public void setLifecycle(Lifecycle lifecycle) {
+        this.lifecycle = new WeakReference<Lifecycle>(lifecycle);
     }
 
     @Subscribe

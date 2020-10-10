@@ -54,6 +54,7 @@ dependencies {
     // 自动解绑
     implementation "com.uber.autodispose:autodispose:$deps.autodispose"
     implementation "com.uber.autodispose:autodispose-android-archcomponents:$deps.autodispose_android_archcomponents"
+    implementation "com.google.code.gson:gson:$deps.gson"
 
 
 //    implementation 'com.google.android.material:material:1.0.0'

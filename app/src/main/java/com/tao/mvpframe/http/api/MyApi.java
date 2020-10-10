@@ -20,6 +20,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 
 public interface MyApi {
+    
     @GET("mock")
     Observable<MyBaseEntity<MockEntity>> getMock();
     @FormUrlEncoded

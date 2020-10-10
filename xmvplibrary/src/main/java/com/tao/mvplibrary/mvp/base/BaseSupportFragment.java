@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
 
+import com.tao.mvplibrary.mvp.IBaseView;
+import com.tao.mvplibrary.mvp.IView;
+
 import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;

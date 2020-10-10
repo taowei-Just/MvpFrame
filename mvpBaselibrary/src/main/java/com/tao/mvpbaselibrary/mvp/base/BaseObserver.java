@@ -3,11 +3,11 @@ package com.tao.mvpbaselibrary.mvp.base;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-class BaseObserver implements Observer {
+public class BaseObserver implements Observer {
     
     @Override
     public void onSubscribe(Disposable d) {
-        
+    
     }
 
     @Override
