@@ -90,7 +90,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         mView = view;
         mContext = view.getContext();
 //        view.setOnTouchListener(this);
-        initView();
+        initView(mContextView);
         mDialog = getDialog();
         
     }
@@ -111,7 +111,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         initData();
     }
     @Override
-    public void initView() {
+    public void initView(View mContextView) {
 
     }
 

@@ -1,0 +1,19 @@
+def isOpenExtraResBuild = false
+//项目根目录资源
+def resourcesDir = "resources"
+android {
+    sourceSets {
+        main {
+            println("extra isOpenExtraResBuild-->" + isOpenExtraResBuild)
+            def dirs = new File(isOpenExtraResBuild ? "$rootProject.projectDir/$resourcesDir" : "$project.projectDir/src").list()
+            println("extra dirs-->$dirs")
+            dirs.each { dir ->
+                def resDir = (isOpenExtraResBuild ? "../$resourcesDir/" : "src/") + "$dir/res"
+                println("extra resDir-->$resDir")
+                res.srcDir(resDir)
+            }
+        }
+
+    }
+
+}

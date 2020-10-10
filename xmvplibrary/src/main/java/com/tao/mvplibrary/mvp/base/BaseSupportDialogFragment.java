@@ -65,14 +65,14 @@ public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends
         bind = ButterKnife.bind(this, view);
         mView = view;
         mcContext = view.getContext();
-        initView();
+        initView(mContextView);
     }
 
  
     public  abstract int getLayoutId() ;
 
     @Override
-    public void initView() {
+    public void initView(View mContextView) {
 
     }
 

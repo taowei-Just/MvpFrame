@@ -27,7 +27,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
 
 
-
     // butterknife
     implementation "com.jakewharton:butterknife:$deps.butterknife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$deps.butterknife_compiler"
@@ -61,6 +60,11 @@ dependencies {
     implementation "com.uber.autodispose:autodispose-android:$androidx.autodispose_android"
     implementation "com.uber.autodispose:autodispose-android-archcomponents:$androidx.autodispose_android"
     implementation "com.uber.autodispose:autodispose-android-archcomponents-test:$androidx.autodispose_android_archcomponents_test"
+
+
+    implementation "me.yokeyword:fragmentationx:$androidx.fragmentationx"
+ 
+
 
     api project(path: ':mvpBaselibrary')
     

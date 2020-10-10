@@ -46,10 +46,30 @@ public abstract class BaseSupportFragment<P extends BasePresenter> extends Fragm
             e.printStackTrace();
         }
     }
+    public View mContextView = null;
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(getLayoutId(), null);
+        if (null == mContextView) {
+            View mView = bindView();
+            if (null == mView) {
+                mContextView = inflater.inflate(getLayoutId(), container, false);
+            } else {
+                mContextView = mView;
+            }
+            initSomethingAfterBindView();
+            initView(mContextView);
+        }
+        return mContextView;
+    }
+
+    private void initSomethingAfterBindView() {
+        
+    }
+
+    private View bindView() {
+        return null;
     }
 
     @Override
@@ -58,7 +78,7 @@ public abstract class BaseSupportFragment<P extends BasePresenter> extends Fragm
         bind = ButterKnife.bind(this, view);
         mView = view;
         mcContext = view.getContext();
-        initView();
+        initView(mContextView);
     }
 
 
@@ -66,7 +86,7 @@ public abstract class BaseSupportFragment<P extends BasePresenter> extends Fragm
     public  abstract int getLayoutId() ;
 
     @Override
-    public void initView() {
+    public void initView(View mContextView) {
 
     }
 

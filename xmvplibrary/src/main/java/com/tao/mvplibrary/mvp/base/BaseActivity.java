@@ -2,6 +2,7 @@ package com.tao.mvplibrary.mvp.base;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -13,8 +14,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.tao.mvpbaselibrary.basic.manager.AppManager;
+import com.tao.mvpbaselibrary.basic.utils.StatusBarUtil;
 import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
 
@@ -46,13 +50,33 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         beforeSetContentView();
         setContentView(getLayoutId());
         bind = ButterKnife.bind(this);
-        initView();
+        AppManager.getAppManager().addActivity(this);
+        initAppStatusBar();
+        initView(getWindow().getDecorView());
         initData();
     }
 
     public void beforeCreate() {
-        
+        setScreenOrientation();
     }
+    public void setScreenOrientation() {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+
+    public void initAppStatusBar() {
+        setStatusBar();
+    }
+
+
+    public void setStatusBar() {
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, android.R.color.white), 0);
+    }
+
+    public void setTranslucentBar() {
+        StatusBarUtil.setTranslucentForImageViewInFragment(this, 0, null);
+    }
+
 
     /**
      * 在用于设的contentview之前
@@ -65,7 +89,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public  abstract int getLayoutId();
 
     @Override
-    public void initView() {
+    public void initView(View mContextView) {
 
     }
 
