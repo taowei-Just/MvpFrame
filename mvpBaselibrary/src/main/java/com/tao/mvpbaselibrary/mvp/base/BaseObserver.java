@@ -3,7 +3,7 @@ package com.tao.mvpbaselibrary.mvp.base;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class BaseObserver implements Observer {
+public abstract class BaseObserver<T> implements Observer<T> {
     
     @Override
     public void onSubscribe(Disposable d) {
@@ -11,9 +11,11 @@ public class BaseObserver implements Observer {
     }
 
     @Override
-    public void onNext(Object o) {
-
+    public void onNext(T o) {
+    accept(o);
     }
+
+    protected abstract void accept(T o);
 
     @Override
     public void onError(Throwable e) {
@@ -24,4 +26,6 @@ public class BaseObserver implements Observer {
     public void onComplete() {
 
     }
+    
+    
 }

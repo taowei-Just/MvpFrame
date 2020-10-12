@@ -1,4 +1,3 @@
-include ':lib_basic'
 include ':testapp2'
 include ':lib_http'
 include ':mvpBaselibrary'

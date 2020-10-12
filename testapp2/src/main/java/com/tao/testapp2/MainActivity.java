@@ -2,20 +2,21 @@ package com.tao.testapp2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import androidx.lifecycle.Lifecycle;
 
+import com.tao.mvpbaselibrary.basic.utils.ToastUtil;
+import com.tao.mvpbaselibrary.mvp.base.BaseObserver;
 import com.tao.mvpframe.test.contract.MainActivtyContract;
 import com.tao.mvpframe.test.presenter.MainActivityPresent;
 import com.tao.mvplibrary.mvp.IView;
 import com.tao.mvplibrary.mvp.base.BaseActivity;
+import com.tao.mvplibrary.utils.RxUtils;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-
-
-import io.reactivex.functions.Consumer;
 
 
 public class MainActivity extends BaseActivity<MainActivityPresent> implements MainActivtyContract.IMainActivtyView<MainActivityPresent> {
@@ -39,34 +40,21 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
     @SuppressLint("AutoDispose")
     @Override
     public void initData() {
-
-
+        ToastUtil.init(getApplicationContext());
         RxPermissions rxPermissions = new RxPermissions(this);
-
-        rxPermissions.requestEach(Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Permission>() {
-            @Override
-            public void accept(Permission permission) throws Exception {
-                if (permission.granted) {
-                    // 用户允许权限
-                } else if (permission.shouldShowRequestPermissionRationale) {
-                    // 用户单次拒绝权限                    
-                } else {
-                    // 用户拒绝权限并不再询问
-                }
-            }
-        });
-
-
-//
-//        if (!EasyPermissions.hasPermissions(this, Manifest.permission.INTERNET))
-//            EasyPermissions.requestPermissions(this, "internet", 1000, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        if (!EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-//            EasyPermissions.requestPermissions(this, "internet", 1000, Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        RxUtils.toSubscribe(rxPermissions.requestEach(Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                new BaseObserver<Permission>() {
+                    @Override
+                    protected void accept(Permission permission) {
+                        if (permission.granted) {
+                            // 用户允许权限
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            // 用户单次拒绝权限                    
+                        } else {
+                            // 用户拒绝权限并不再询问
+                        }
+                    }
+                }, getLifecycle());
 
     }
 
@@ -111,20 +99,26 @@ public class MainActivity extends BaseActivity<MainActivityPresent> implements M
         }
     }
 
+    public void test002(View view) {
+        ToastUtil.shortShow(" jump 2 mainactivity 2");
+        startActivity(new Intent(this, MainActivity2.class));
+
+    }
+
     @Override
     protected IView getAttachView() {
         return new Myview();
     }
 
-    class Myview implements IView<MainActivtyContract.IMainActivtyPresenter> {
+    class Myview implements IView<MainActivityPresent> {
 
         @Override
-        public MainActivtyContract.IMainActivtyPresenter getP() throws Exception {
+        public MainActivityPresent getP() throws Exception {
             return MainActivity.this.getP();
         }
 
         @Override
-        public MainActivtyContract.IMainActivtyPresenter getP(IView view) throws Exception {
+        public MainActivityPresent getP(IView view) throws Exception {
             return MainActivity.this.getP(view);
         }
 

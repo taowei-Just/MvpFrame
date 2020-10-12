@@ -34,6 +34,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public Context mcContext;
     private Unbinder bind;
     private IView attachView;
+    private LifecycleRegistry         lifecycleRegistry = new LifecycleRegistry(this);
+    
 
     public static <T extends BaseFragment> T getInstance(Class<T> tClass) throws Exception {
         return tClass.newInstance();
@@ -44,6 +46,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
         try {
             attachView = getAttachView();
             getP().attachView(attachView);
@@ -64,7 +67,6 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
             }
             initSomethingAfterBindView();
             initView(mContextView);
-
         }
         return mContextView;
     }
@@ -138,14 +140,39 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
         if (null != mPresenter)
             mPresenter.dettachView();
     }
 
 
     public Lifecycle getLifecycle() {
-        return new LifecycleRegistry(this);
+        return lifecycleRegistry;
     }
 }

@@ -13,8 +13,10 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.tao.mvpbaselibrary.basic.manager.AppManager;
@@ -26,12 +28,13 @@ import java.lang.reflect.ParameterizedType;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import me.yokeyword.fragmentation.SupportActivity;
 
 /**
  * Created by Administrator on 2019-8-7.
  */
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements LifecycleOwner, IBaseView<P> {
+public abstract class BaseActivity<P extends BasePresenter> extends SupportActivity implements IBaseView<P> {
 
     private P mPresenter;
     private Unbinder bind;
@@ -54,6 +57,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         initAppStatusBar();
         initView(getWindow().getDecorView());
         initData();
+       
     }
 
     public void beforeCreate() {
@@ -82,7 +86,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * 在用于设的contentview之前
      * 多用于窗口的设置
      */
-    public void beforeSetContentView() {
+    public void beforeSetContentView() { 
     }
 
     @Override
@@ -101,9 +105,11 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         if (null != mPresenter)
             mPresenter.dettachView();
-        super.onDestroy();
+        AppManager.getAppManager().popActivity(this);
+
     }
 
     @Override
@@ -232,5 +238,5 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
        
     }
 
- 
+    
 }

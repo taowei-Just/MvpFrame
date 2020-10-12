@@ -2,8 +2,10 @@ package com.tao.mvpframe.app;
 
 import android.app.Application;
 
+import com.tao.mvplibrary.app.BaseApplication;
 
-public class MyApp extends Application {
+
+public class MyApp extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();

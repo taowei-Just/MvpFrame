@@ -45,9 +45,11 @@ public class MainActivityPresent extends BasePresenter<MainActivtyContract.IMain
 
             }
         }), new BaseObserver() {
+           
+
             @Override
-            public void onNext(Object o) {
-            
+            protected void accept(Object o) {
+                
             }
         }, getLifecycle());
 

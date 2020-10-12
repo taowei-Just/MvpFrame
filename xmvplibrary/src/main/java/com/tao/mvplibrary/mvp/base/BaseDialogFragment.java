@@ -18,7 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
@@ -34,12 +37,14 @@ import butterknife.Unbinder;
 
 public abstract class BaseDialogFragment<P extends BasePresenter> extends DialogFragment implements LifecycleOwner, IBaseView, View.OnTouchListener {
     P mPresenter;
-    public View mView;
+    public View mContextView;
     public Context mContext;
     public OnDimssListener onDimssListener;
     private Dialog mDialog;
     private Unbinder bind;
     private IView attachView;
+    private LifecycleRegistry         lifecycleRegistry = new LifecycleRegistry(this);
+    
 
     public  static  <T extends BaseDialogFragment> T getInstance(Class<T> tClass) throws Exception {
         return tClass.newInstance();
@@ -66,7 +71,6 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     protected IView getAttachView() {
@@ -80,19 +84,38 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(getLayoutId(), null);
+//        return inflater.inflate(getLayoutId(), null);
+
+        if (null == mContextView) {
+            View mView = bindView();
+            if (null == mView) {
+                mContextView = inflater.inflate(getLayoutId(), container, false);
+                bind = ButterKnife.bind(this, mContextView);
+
+            } else {
+                mContextView = mView;
+            }
+            initSomethingAfterBindView();
+            initView(mContextView);
+        }
+        return mContextView;
     }
+
+    private View bindView() {
+        return null;
+    }
+
+    protected   void initSomethingAfterBindView(){
+        
+    }
+
+   
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bind = ButterKnife.bind(this, view);
-        mView = view;
         mContext = view.getContext();
-//        view.setOnTouchListener(this);
-        initView(mContextView);
         mDialog = getDialog();
-        
     }
 
     @Override
@@ -150,11 +173,37 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
+    }
+
+    @Override
     public void onDestroy() {
+        super.onDestroy();
+        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
         if (null != mPresenter)
             mPresenter.dettachView();
-        super.onDestroy();
     }
+
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -221,5 +270,9 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends Dialog
         }
     }
 
- 
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycleRegistry;
+    }
 }

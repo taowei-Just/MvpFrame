@@ -1,14 +1,16 @@
 package com.tao.mvplibrary.mvp.base;
 
 
-import androidx.lifecycle.Lifecycle;
+import android.util.Log;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
+
+import com.tao.mvpbaselibrary.mvp.base.BaseObserver;
 import com.tao.mvplibrary.mvp.IModle;
 import com.tao.mvplibrary.mvp.IPresenter;
 import com.tao.mvplibrary.mvp.IView;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.AutoDisposeConverter;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -18,9 +20,6 @@ import java.lang.ref.WeakReference;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -42,6 +41,7 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
     public BasePresenter() {
         EventBus.getDefault().register(this);
         setM(creatM());
+        setLifecycle(getLifecycle());
     }
 
     public M creatM() {
@@ -93,14 +93,33 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
 
     public Lifecycle getLifecycle() {
         Lifecycle lf = null;
-        if (null != lifecycle && null == lifecycle.get() && v != null && v.get() != null && (v.get() instanceof Lifecycle)) {
+        if (lifecycle == null) {
+            lf = castLifecycle();
+        } else if (null != lifecycle.get()) {
+            lf = lifecycle.get();
+        } else {
+            lf = castLifecycle();
+        }
+        return lf;
+    }
+
+    private Lifecycle castLifecycle() {
+        Lifecycle lf = null;
+        if (v == null || v.get() == null)
+            return lf;
+
+        if ((v.get() instanceof Lifecycle)) {
             lf = (Lifecycle) v.get();
+        } else if ((v.get() instanceof LifecycleRegistry)) {
+            lf = (LifecycleRegistry) v.get();
+        } else if ((v.get() instanceof LifecycleOwner)) {
+            lf = v.get().getLifecycle();
         }
         return lf;
     }
 
     public void setLifecycle(Lifecycle lifecycle) {
-        this.lifecycle = new WeakReference<Lifecycle>(lifecycle);
+        this.lifecycle = new WeakReference<>(lifecycle);
     }
 
     @Subscribe
@@ -109,57 +128,60 @@ public abstract class BasePresenter<V extends IView, M extends IModle> implement
 
     // 抛到ui执行
     public void runOnUI(final Runnable runnable) {
-        try {
-            toSubscribe(Observable.create(new ObservableOnSubscribe<Object>() {
-                @Override
-                public void subscribe(ObservableEmitter<Object> e) throws Exception {
+        runThread(runnable, true);
+    }
 
+
+    public void runThread(final Runnable runnable, boolean observerOnMain) {
+
+        final Disposable[] disposable = new Disposable[1];
+        try {
+            Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
+                @Override
+                public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                    emitter.onNext(0);
                 }
-            }), new Observer<Object>() {
+            });
+            if (observerOnMain)
+                observable.observeOn(AndroidSchedulers.mainThread());
+            else
+                observable.observeOn(Schedulers.io());
+
+            observable.subscribe(new BaseObserver() {
                 @Override
                 public void onSubscribe(Disposable d) {
-
+                    super.onSubscribe(d);
+                    disposable[0] = d;
                 }
 
                 @Override
-                public void onNext(Object o) {
+                protected void accept(Object o) {
                     runnable.run();
                 }
 
                 @Override
                 public void onError(Throwable e) {
-
+                    super.onError(e);
+                    Log.e(tag, "onError");
+                    closeDispos(disposable[0]);
                 }
 
                 @Override
                 public void onComplete() {
-
+                    super.onComplete();
+                    closeDispos(disposable[0]);
+                    Log.e(tag, "onComplete");
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    // 提交订阅
-    public <T> void toSubscribe(Observable<T> observable, Observer<? super T> observer) throws Exception {
-        observable.compose(getComposer()).as(bindLifecycle()).subscribe((Observer<? super Object>) observer);
-    }
-
-    // 绑定自动解绑生命周期
-    public <T> AutoDisposeConverter<T> bindLifecycle() {
-        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(v.get(), Lifecycle.Event.ON_DESTROY));
-    }
-
-    // 线程调度器
-    public <T> ObservableTransformer<T, T> getComposer() {
-        return new ObservableTransformer<T, T>() {
-            @Override
-            public ObservableSource<T> apply(Observable<T> upstream) {
-                return upstream.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-            }
-        };
+    private void closeDispos(Disposable disposable) {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
 

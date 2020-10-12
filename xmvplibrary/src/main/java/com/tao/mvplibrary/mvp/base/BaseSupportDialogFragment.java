@@ -1,7 +1,6 @@
 package com.tao.mvplibrary.mvp.base;
 
 
- 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.tao.mvplibrary.mvp.IBaseView;
 import com.tao.mvplibrary.mvp.IView;
+import com.tao.mvplibrary.utils.FragmentInitUtil;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -29,13 +29,13 @@ import butterknife.Unbinder;
 
 public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends DialogFragment implements LifecycleOwner, IBaseView<P> {
     P mPresenter;
-    public View mView;
+    public View mContextView;
     public Context mcContext;
     private Unbinder bind;
     public BaseDialogFragment.OnDimssListener onDimssListener;
     private IView attachView;
 
-    public  static  <T extends BaseSupportDialogFragment> T getInstance(Class<T> tClass) throws Exception {
+    public static <T extends BaseSupportDialogFragment> T getInstance(Class<T> tClass) throws Exception {
         return tClass.newInstance();
     }
 
@@ -52,24 +52,43 @@ public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends
         } catch (Exception e) {
             e.printStackTrace();
         }
+ 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(getLayoutId(), null);
+//        return inflater.inflate(getLayoutId(), null);
+        if (null == mContextView) {
+            View mView = bindView();
+            if (null == mView) {
+                mContextView = inflater.inflate(getLayoutId(), container, false);
+                bind = ButterKnife.bind(this, mContextView);
+            } else {
+                mContextView = mView;
+                bind = ButterKnife.bind(this, mContextView);
+            }
+            initSomethingAfterBindView();
+            initView(mContextView);
+        }
+        return mContextView;
+    }
+
+    private View bindView() {
+        return null;
+    }
+
+    protected void initSomethingAfterBindView() {
+
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bind = ButterKnife.bind(this, view);
-        mView = view;
         mcContext = view.getContext();
-        initView(mContextView);
     }
 
- 
-    public  abstract int getLayoutId() ;
+
+    public abstract int getLayoutId();
 
     @Override
     public void initView(View mContextView) {
@@ -92,7 +111,7 @@ public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends
     }
 
     @Override
-    public P getP(IView v)  throws Exception{
+    public P getP(IView v) throws Exception {
         if (v == null)
             return getP();
 
@@ -104,13 +123,13 @@ public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends
 
 
     @Override
-    public P getP() throws Exception{
+    public P getP() throws Exception {
         if (mPresenter == null) {
             //实例化P层，类似于p = new P();
             ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
             Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
-                mPresenter = clazz.newInstance();
-             
+            mPresenter = clazz.newInstance();
+
         }
         if (mPresenter != null) {
             if (!mPresenter.isAttachedV() && !mPresenter.isDeattachV()) {
@@ -130,8 +149,8 @@ public abstract class BaseSupportDialogFragment<P extends BasePresenter> extends
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        if (null!=onDimssListener)
-        onDimssListener.onDismiss(getClass().getSimpleName());
+        if (null != onDimssListener)
+            onDimssListener.onDismiss(getClass().getSimpleName());
     }
 
     @NonNull
